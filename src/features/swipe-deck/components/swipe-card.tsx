@@ -265,9 +265,9 @@ export function SwipeCard({
             "px-5 pb-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1.25rem))]",
             "[scrollbar-color:var(--border)_transparent]",
             "dark:[scrollbar-color:rgba(255,255,255,0.28)_transparent]",
-            active && "pointer-events-auto touch-pan-y",
+            active && "pointer-events-auto touch-pan-x touch-pan-y",
           )}
-          style={{ touchAction: active ? "pan-y" : undefined }}
+          style={{ touchAction: active ? "pan-x pan-y" : undefined }}
           onPointerDown={active ? stopDragFromScrollPanel : undefined}
         >
           <p className="text-sm leading-relaxed text-foreground/90 dark:text-white/88">
@@ -289,20 +289,31 @@ export function SwipeCard({
           <h3 className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted dark:text-white/58">
             Habilidades
           </h3>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <ul
+            aria-label="Habilidades, deslizá horizontalmente para ver todas"
+            className={cn(
+              "mt-2 -mx-5 flex snap-x snap-proximity list-none gap-2 overflow-x-auto overflow-y-visible pl-5 pr-5",
+              "overscroll-x-contain [-webkit-overflow-scrolling:touch]",
+              "pb-1 [scrollbar-color:var(--border)_transparent]",
+              "dark:[scrollbar-color:rgba(255,255,255,0.22)_transparent]",
+            )}
+          >
             {profile.skills.map((skill) => (
-              <Badge
-                key={skill}
-                tone="neutral"
-                className={cn(
-                  "max-w-[100%] border border-border bg-surface text-foreground backdrop-blur-sm",
-                  "dark:border-white/10 dark:bg-white/12 dark:text-white",
-                )}
-              >
-                <span className="break-words text-left">{skill}</span>
-              </Badge>
+              <li key={skill} className="shrink-0 snap-start py-px">
+                <Badge
+                  tone="neutral"
+                  className={cn(
+                    "min-h-[2.75rem] min-w-max max-w-[min(19rem,calc(100vw-8rem))] items-center justify-center",
+                    "border border-border bg-surface text-foreground backdrop-blur-sm shadow-sm",
+                    "dark:border-white/10 dark:bg-white/12 dark:text-white",
+                    "px-3 py-2 text-left whitespace-normal align-middle leading-snug",
+                  )}
+                >
+                  {skill}
+                </Badge>
+              </li>
             ))}
-          </div>
+          </ul>
 
           {hasContact && (
             <div className="mt-6 space-y-3 border-t border-border pt-5 dark:border-white/15">
