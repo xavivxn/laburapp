@@ -19,40 +19,40 @@ export function SwipeActions({
   disabled,
 }: SwipeActionsProps) {
   return (
-    <div className="flex items-center justify-center gap-3 sm:gap-4">
+    <div className="flex items-center justify-center gap-2 sm:gap-3">
       {onRewind && (
         <ActionButton
           label="Volver atrás"
           onClick={onRewind}
           disabled={disabled}
-          className="h-12 w-12 bg-surface text-warning border border-border"
+          className="h-11 w-11 bg-surface text-warning border border-border"
         >
-          <RotateCcw className="h-5 w-5" aria-hidden />
+          <RotateCcw className="h-4 w-4" aria-hidden />
         </ActionButton>
       )}
       <ActionButton
         label="Pasar"
         onClick={onPass}
         disabled={disabled}
-        className="h-14 w-14 bg-surface text-danger border border-border"
+        className="h-11 w-11 bg-surface text-danger border border-border"
       >
-        <X className="h-7 w-7" aria-hidden strokeWidth={3} />
+        <X className="h-6 w-6" aria-hidden strokeWidth={2.75} />
       </ActionButton>
       <ActionButton
         label="Super interesado"
         onClick={onSuper}
         disabled={disabled}
-        className="h-12 w-12 bg-surface text-primary border border-border"
+        className="h-11 w-11 bg-surface text-primary border border-border"
       >
-        <Star className="h-5 w-5" aria-hidden strokeWidth={2.5} />
+        <Star className="h-4 w-4" aria-hidden strokeWidth={2.5} />
       </ActionButton>
       <ActionButton
         label="Match"
         onClick={onMatch}
         disabled={disabled}
-        className="h-14 w-14 bg-accent text-accent-foreground"
+        className="h-11 w-11 bg-accent text-accent-foreground"
       >
-        <Heart className="h-7 w-7 fill-current" aria-hidden />
+        <Heart className="h-6 w-6 fill-current" aria-hidden />
       </ActionButton>
     </div>
   );

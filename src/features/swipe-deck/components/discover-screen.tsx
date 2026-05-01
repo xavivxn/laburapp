@@ -62,7 +62,7 @@ export function DiscoverScreen() {
             /* Ocupa sólo lo que queda tras header/filters: el alto lo da flex, sin min-h gigante */
             "min-h-[10rem]",
             /* Deja hueco visual bajo el deck = banda fija de CTAs (no pisar la cara con los botones al arrastrar). */
-            "max-lg:pb-28",
+            "max-lg:pb-24",
             "lg:min-h-[min(36rem,calc(100svh-14rem))]",
           ].join(" ")}
         >
@@ -99,7 +99,7 @@ export function DiscoverScreen() {
             "lg:pt-4 lg:pb-safe",
             "max-lg:fixed max-lg:left-1/2 max-lg:-translate-x-1/2 max-lg:z-[38] max-lg:w-full max-lg:max-w-[min(100%,34rem)]",
             "max-lg:bottom-[calc(env(safe-area-inset-bottom)+5rem)] max-lg:pointer-events-none",
-            "max-lg:px-4 max-lg:pt-3 max-lg:pb-3",
+            "max-lg:px-4 max-lg:pt-2 max-lg:pb-2",
             "max-lg:bg-background/94 max-lg:backdrop-blur-xl max-lg:border-t max-lg:border-border/45 max-lg:shadow-[0_-8px_28px_-6px_rgba(0,0,0,0.18)]",
             "dark:max-lg:border-border/30 dark:max-lg:bg-background/92 dark:max-lg:shadow-[0_-8px_32px_-8px_rgba(0,0,0,0.45)]",
           ].join(" ")}
