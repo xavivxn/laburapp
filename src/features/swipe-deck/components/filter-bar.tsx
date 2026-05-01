@@ -16,8 +16,10 @@ export function FilterBar({ selected, onOpenSheet, onRemove }: FilterBarProps) {
   return (
     <div className="px-4 sm:px-6 pt-3">
       <div
-        className="flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scroll-pl-1"
-        style={{ scrollbarWidth: "none" }}
+        className={cn(
+          "flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scroll-pl-1 touch-pan-x",
+          "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        )}
       >
         <button
           type="button"

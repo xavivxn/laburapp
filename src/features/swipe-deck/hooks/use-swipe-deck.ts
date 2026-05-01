@@ -3,15 +3,28 @@
 import { useCallback, useEffect, useState } from "react";
 import type { Profile, SwipeAction } from "../types";
 
+function uniqProfilesById(list: Profile[]): Profile[] {
+  const seen = new Set<string>();
+  const out: Profile[] = [];
+  for (const p of list) {
+    if (seen.has(p.id)) continue;
+    seen.add(p.id);
+    out.push(p);
+  }
+  return out;
+}
+
 export function useSwipeDeck(initial: Profile[]) {
-  const [stack, setStack] = useState<Profile[]>(initial);
+  const sanitized = uniqProfilesById(initial);
+  const [stack, setStack] = useState<Profile[]>(sanitized);
   const [history, setHistory] = useState<{ profile: Profile; action: SwipeAction }[]>(
     [],
   );
 
   useEffect(() => {
+    const next = uniqProfilesById(initial);
     queueMicrotask(() => {
-      setStack(initial);
+      setStack(next);
       setHistory([]);
     });
   }, [initial]);
@@ -31,13 +44,16 @@ export function useSwipeDeck(initial: Profile[]) {
     setHistory((h) => {
       if (h.length === 0) return h;
       const [last, ...rest] = h;
-      setStack((s) => [last.profile, ...s]);
+      setStack((s) => {
+        if (s[0]?.id === last.profile.id) return s;
+        return [last.profile, ...s];
+      });
       return rest;
     });
   }, []);
 
   const reset = useCallback(() => {
-    setStack(initial);
+    setStack(uniqProfilesById(initial));
     setHistory([]);
   }, [initial]);
 

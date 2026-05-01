@@ -11,6 +11,22 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
+  async headers() {
+    return [
+      {
+        source: "/avatars/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value:
+              process.env.NODE_ENV === "production"
+                ? "public, max-age=0, must-revalidate"
+                : "no-store",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

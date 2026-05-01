@@ -1,18 +1,26 @@
 "use client";
 
 import { LogOut, Briefcase, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { AppHeader } from "@/shared/components/layout/app-header";
 import { Avatar } from "@/shared/components/ui/avatar";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import { Card } from "@/shared/components/ui/card";
 import { Rating } from "@/shared/components/ui/rating";
+import { demoUserPhotoUrl } from "@/config/site";
 import { useRoleStore } from "@/shared/stores/role-store";
 import { useTheme } from "@/shared/hooks/use-theme";
 
 export function ProfileScreen() {
+  const router = useRouter();
   const role = useRoleStore((s) => s.role);
   const { resolvedTheme } = useTheme();
+
+  function handleLogout() {
+    // TODO(auth): cerrar sesión en Supabase y limpiar stores antes del redirect.
+    router.push("/login");
+  }
 
   return (
     <>
@@ -22,11 +30,15 @@ export function ProfileScreen() {
         <Card className="p-5 flex items-center gap-4">
           <Avatar
             size={72}
+            alt="Iván Xavier"
             fallback="Iván Xavier"
-            src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80&auto=format&fit=crop"
+            src={demoUserPhotoUrl}
           />
           <div className="min-w-0 flex-1">
             <h2 className="text-lg font-bold truncate">Iván Xavier</h2>
+            <p className="text-xs sm:text-sm text-foreground/90 font-medium mt-0.5">
+              Ingeniero Informático · Software Engineer
+            </p>
             <p className="text-sm text-muted truncate">ivanxavi4@gmail.com</p>
             <div className="mt-1.5 flex items-center gap-2">
               <Rating value={4.9} count={42} />
@@ -58,10 +70,12 @@ export function ProfileScreen() {
         </Card>
 
         <Button
+          type="button"
           variant="outline"
           fullWidth
           size="lg"
           className="text-danger border-danger/50 hover:bg-danger/10"
+          onClick={handleLogout}
         >
           <LogOut className="h-5 w-5" />
           Cerrar sesión

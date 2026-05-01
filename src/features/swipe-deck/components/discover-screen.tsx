@@ -32,7 +32,7 @@ export function DiscoverScreen() {
     role === "employer" ? "Buscando profesionales" : "Explorando oportunidades";
 
   return (
-    <>
+    <div className="flex flex-col flex-1 min-h-0 w-full mx-auto">
       <AppHeader showBrand subtitle={headerSubtitle} />
 
       <FilterBar
@@ -41,8 +41,8 @@ export function DiscoverScreen() {
         onRemove={(slug) => setFilters((f) => f.filter((s) => s !== slug))}
       />
 
-      <div className="px-4 sm:px-6 pt-4 pb-6 mx-auto w-full max-w-xl">
-        <div className="relative w-full aspect-[3/4] max-h-[640px]">
+      <div className="flex flex-col flex-1 min-h-0 px-4 sm:px-6 pt-4 w-full max-w-xl mx-auto">
+        <div className="relative w-full flex-1 min-h-0">
           <AnimatePresence>
             {stack.slice(0, 3).map((profile, idx) => (
               <SwipeCard
@@ -64,7 +64,17 @@ export function DiscoverScreen() {
           )}
         </div>
 
-        <div className="mt-6">
+        <div
+          className={[
+            "shrink-0 z-10 -mx-4 px-4 sm:-mx-6 sm:px-6 mt-3 pt-3 pb-safe lg:mx-0 lg:px-0",
+            "bg-gradient-to-t from-background via-background/95 to-transparent",
+            "lg:bg-transparent lg:from-transparent lg:via-transparent",
+            "sticky bottom-0 lg:static",
+          ].join(" ")}
+          style={{
+            bottom: "max(env(safe-area-inset-bottom), 0px)",
+          }}
+        >
           <SwipeActions
             disabled={isEmpty}
             onRewind={history.length > 0 ? rewind : undefined}
@@ -81,7 +91,7 @@ export function DiscoverScreen() {
         selected={filters}
         onApply={setFilters}
       />
-    </>
+    </div>
   );
 }
 
