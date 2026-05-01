@@ -105,10 +105,11 @@ export function SwipeCard({
       }}
       transition={{ type: "spring", stiffness: 260, damping: 24 }}
       className={cn(
-        "absolute inset-0 overflow-hidden isolate rounded-[1.875rem]",
+        /* overflow-visible: no recortar sombras del panel ni velos sobre la foto; el recorte lo hace la capa foto. */
+        "absolute inset-0 isolate overflow-visible rounded-[1.875rem]",
         "max-lg:rounded-[clamp(1.25rem,4.2vw,1.95rem)]",
-        "shadow-[0_22px_55px_-14px_rgba(0,0,0,0.42)] ring-1 ring-black/14",
-        "dark:ring-white/10 bg-black/40 dark:bg-black/55",
+        "shadow-[0_22px_55px_-14px_rgba(0,0,0,0.42)] dark:shadow-[0_22px_55px_-14px_rgba(0,0,0,0.5)]",
+        "ring-1 ring-border bg-background/95 dark:bg-black/55 dark:ring-white/10",
         "select-none touch-none",
         active ? "cursor-grab active:cursor-grabbing" : "pointer-events-none",
       )}
@@ -150,12 +151,20 @@ export function SwipeCard({
             style={photoPosition ? { objectPosition: photoPosition } : undefined}
           />
         </div>
+        {/* Degradado en la mitad inferior: evita corte abrupto donde empieza el panel (viejo inset-0 + overflow del card lo recortaba). */}
         <div
           className={cn(
-            "pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent rounded-[inherit]",
+            "pointer-events-none absolute inset-x-0 bottom-0 h-[92%]",
+            "bg-gradient-to-t to-transparent rounded-none",
             compactDetail
-              ? "from-black/74 via-black/26 via-[30%]"
-              : "from-black/92 via-black/38 via-[35%]",
+              ? [
+                  "from-background/[0.93] via-background/25 via-[28%]",
+                  "dark:from-black/[0.76] dark:via-black/[0.26] dark:via-[26%]",
+                ]
+              : [
+                  "from-background/[0.94] via-background/28 via-[32%]",
+                  "dark:from-black/[0.92] dark:via-black/[0.36] dark:via-[33%]",
+                ],
           )}
         />
       </div>
@@ -165,7 +174,13 @@ export function SwipeCard({
       <SwipeOverlay opacity={superOpacity} label="SUPER" tone="primary" position="top" />
 
       {profile.online && (
-        <div className="absolute top-4 right-4 flex items-center gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1 text-xs font-medium text-white z-[1]">
+        <div
+          className={cn(
+            "absolute top-4 right-4 z-[1] flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur-md",
+            "border border-border bg-background/92 text-foreground shadow-sm",
+            "dark:border-transparent dark:bg-black/45 dark:text-white",
+          )}
+        >
           <span className="h-2 w-2 rounded-full bg-success" />
           En línea
         </div>
@@ -177,10 +192,12 @@ export function SwipeCard({
        */}
       <div
         className={cn(
-          "absolute inset-x-0 bottom-0 z-[1] flex flex-col",
+          "absolute inset-x-0 bottom-0 z-[1] flex flex-col overflow-visible",
           "rounded-t-[1.75rem]",
-          "bg-black/50 backdrop-blur-xl border-t border-white/12",
-          "shadow-[0_-16px_40px_rgba(0,0,0,0.45)]",
+          "border-t border-border bg-background/97 backdrop-blur-xl",
+          /* Sombra suave hacia adentro + ring; evita box-shadow negativa que el padre con overflow recortaba. */
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-black/[0.04]",
+          "dark:border-white/12 dark:bg-black/50 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] dark:ring-white/[0.07]",
           compactDetail ? "min-h-[6.5rem]" : "min-h-[7.5rem]",
           compactDetail
             ? [
@@ -198,31 +215,33 @@ export function SwipeCard({
         <div
           aria-hidden
           className={cn(
-            "mx-auto mt-2 mb-1 h-1 w-10 rounded-full bg-white/35",
+            "mx-auto mt-2 mb-1 h-1 w-10 rounded-full bg-border dark:bg-white/35",
             "lg:hidden shrink-0",
           )}
         />
 
         <div className="px-5 pt-2 pb-3 shrink-0 pointer-events-none">
           <div className="flex items-center gap-2">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white drop-shadow-md">
+            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground drop-shadow-sm dark:text-white dark:drop-shadow-md">
               {profile.name}
               {profile.age ? (
-                <span className="font-normal text-white/90">, {profile.age}</span>
+                <span className="font-normal text-muted dark:text-white/90">, {profile.age}</span>
               ) : null}
             </h2>
             {profile.verified && (
               <BadgeCheck className="h-5 w-5 text-info shrink-0" aria-label="Verificado" />
             )}
           </div>
-          <p className="mt-1 text-sm font-medium text-white/90 line-clamp-2">{profile.headline}</p>
+          <p className="mt-1 text-sm font-medium text-foreground/90 line-clamp-2 dark:text-white/90">
+            {profile.headline}
+          </p>
 
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-white/82">
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs sm:text-sm text-muted dark:text-white/82">
             <span className="inline-flex items-center gap-1">
               <MapPin className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" aria-hidden />
               {profile.location}
               {profile.distanceKm > 0 && (
-                <span className="text-white/58"> · {profile.distanceKm} km</span>
+                <span className="text-muted/80 dark:text-white/58"> · {profile.distanceKm} km</span>
               )}
             </span>
             <span className="inline-flex items-center gap-1">
@@ -230,8 +249,10 @@ export function SwipeCard({
                 className="h-3.5 w-3.5 sm:h-4 sm:w-4 fill-warning text-warning shrink-0"
                 aria-hidden
               />
-              <span className="font-semibold">{profile.rating.toFixed(1)}</span>
-              <span className="text-white/58">({profile.reviews})</span>
+              <span className="font-semibold text-foreground dark:text-white">
+                {profile.rating.toFixed(1)}
+              </span>
+              <span className="text-muted/80 dark:text-white/58">({profile.reviews})</span>
             </span>
           </div>
         </div>
@@ -242,21 +263,30 @@ export function SwipeCard({
           className={cn(
             "flex-1 min-h-0 min-h-[5.5rem] overflow-y-auto overscroll-y-contain",
             "px-5 pb-[max(1.5rem,calc(env(safe-area-inset-bottom,0px)+1.25rem))]",
-            "[scrollbar-color:rgba(255,255,255,0.28)_transparent]",
+            "[scrollbar-color:var(--border)_transparent]",
+            "dark:[scrollbar-color:rgba(255,255,255,0.28)_transparent]",
             active && "pointer-events-auto touch-pan-y",
           )}
           style={{ touchAction: active ? "pan-y" : undefined }}
           onPointerDown={active ? stopDragFromScrollPanel : undefined}
         >
-          <p className="text-sm text-white/88 leading-relaxed">{profile.bio}</p>
+          <p className="text-sm leading-relaxed text-foreground/90 dark:text-white/88">
+            {profile.bio}
+          </p>
 
           {formatRate() && (
-            <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/14 backdrop-blur-md px-3 py-1.5 text-sm font-semibold">
+            <div
+              className={cn(
+                "mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold backdrop-blur-md",
+                "border border-primary/20 bg-primary/10 text-primary",
+                "dark:border-transparent dark:bg-white/14 dark:text-white",
+              )}
+            >
               {formatRate()}
             </div>
           )}
 
-          <h3 className="mt-4 text-xs font-semibold uppercase tracking-wider text-white/58">
+          <h3 className="mt-4 text-xs font-semibold uppercase tracking-wider text-muted dark:text-white/58">
             Habilidades
           </h3>
           <div className="mt-2 flex flex-wrap gap-1.5">
@@ -264,7 +294,10 @@ export function SwipeCard({
               <Badge
                 key={skill}
                 tone="neutral"
-                className="bg-white/12 text-white border border-white/10 backdrop-blur-sm max-w-[100%]"
+                className={cn(
+                  "max-w-[100%] border border-border bg-surface text-foreground backdrop-blur-sm",
+                  "dark:border-white/10 dark:bg-white/12 dark:text-white",
+                )}
               >
                 <span className="break-words text-left">{skill}</span>
               </Badge>
@@ -272,8 +305,8 @@ export function SwipeCard({
           </div>
 
           {hasContact && (
-            <div className="mt-6 space-y-3 border-t border-white/15 pt-5">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-white/58">
+            <div className="mt-6 space-y-3 border-t border-border pt-5 dark:border-white/15">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-muted dark:text-white/58">
                 Contacto directo
               </h3>
               {waHref && (
@@ -285,7 +318,8 @@ export function SwipeCard({
                     "flex w-full min-h-11 items-center justify-center gap-2 rounded-full px-4",
                     "bg-success font-semibold text-white shadow-sm",
                     "transition-opacity hover:opacity-95 active:scale-[0.98]",
-                    "touch-manipulation outline-none ring-offset-2 ring-offset-transparent focus-visible:ring-2 focus-visible:ring-white/60",
+                    "touch-manipulation outline-none ring-offset-2 ring-offset-background focus-visible:ring-2 focus-visible:ring-primary",
+                    "dark:ring-offset-transparent dark:focus-visible:ring-white/60",
                   )}
                 >
                   <MessageCircle className="h-5 w-5 shrink-0 opacity-95" aria-hidden />
@@ -296,14 +330,17 @@ export function SwipeCard({
                 <a
                   href={`mailto:${encodeURIComponent(profile.contactEmail)}`}
                   className={cn(
-                    "flex min-h-11 flex-wrap items-center gap-2 rounded-2xl border border-white/18 bg-white/8 px-4 py-2.5 text-sm font-medium text-white/95 backdrop-blur-sm",
-                    "transition-colors hover:bg-white/12 hover:border-white/25",
-                    "touch-manipulation outline-none ring-offset-2 ring-offset-transparent focus-visible:ring-2 focus-visible:ring-white/50 break-all",
+                    "flex min-h-11 flex-wrap items-center gap-2 rounded-2xl border px-4 py-2.5 text-sm font-medium backdrop-blur-sm",
+                    "border-border bg-surface text-foreground",
+                    "transition-colors hover:bg-surface-elevated",
+                    "dark:border-white/18 dark:bg-white/8 dark:text-white/95 dark:hover:bg-white/12 dark:hover:border-white/25",
+                    "touch-manipulation outline-none ring-offset-2 ring-offset-background focus-visible:ring-2 focus-visible:ring-primary break-all",
+                    "dark:ring-offset-transparent dark:focus-visible:ring-white/50",
                   )}
                 >
-                  <Mail className="h-4 w-4 shrink-0 text-white/85" aria-hidden />
+                  <Mail className="h-4 w-4 shrink-0 text-muted dark:text-white/85" aria-hidden />
                   <span className="min-w-0">
-                    <span className="mr-2 text-xs font-normal uppercase tracking-wide text-white/55">
+                    <span className="mr-2 text-xs font-normal uppercase tracking-wide text-muted dark:text-white/55">
                       Mail personal
                     </span>
                     {profile.contactEmail}
@@ -346,7 +383,8 @@ function SwipeOverlay({
     <motion.div
       style={{ opacity }}
       className={cn(
-        "absolute pointer-events-none z-[2] rounded-2xl border-4 px-4 py-1.5 text-2xl font-extrabold tracking-widest backdrop-blur-sm bg-background/30",
+        "absolute pointer-events-none z-[2] rounded-2xl border-4 px-4 py-1.5 text-2xl font-extrabold tracking-widest backdrop-blur-sm",
+        "bg-background/75 dark:bg-background/30",
         toneClass,
         positionClass,
       )}
