@@ -41,8 +41,21 @@ export function DiscoverScreen() {
         onRemove={(slug) => setFilters((f) => f.filter((s) => s !== slug))}
       />
 
-      <div className="flex flex-col flex-1 min-h-0 px-4 sm:px-6 pt-4 w-full max-w-xl mx-auto">
-        <div className="relative w-full flex-1 min-h-0">
+      <div
+        className={[
+          "flex flex-col flex-1 min-h-0 min-w-0 w-full mx-auto lg:max-w-xl lg:w-full",
+          "pt-3 sm:pt-4 px-2.5 pb-2 sm:px-4 lg:px-6",
+        ].join(" ")}
+      >
+        <div
+          className={[
+            "relative flex-1 min-h-0 min-w-full w-full",
+            /* alto del stage: usa svh (barra estado Android / safari iOS), no sólo flex */
+            "max-lg:min-h-[max(20rem,min(74svh,calc(100svh-13.85rem)))]",
+            "max-lg:landscape:min-h-[max(17rem,min(72svh,calc(100svh-11.25rem)))]",
+            "lg:min-h-[min(36rem,calc(100svh-14rem))]",
+          ].join(" ")}
+        >
           <AnimatePresence>
             {stack.slice(0, 3).map((profile, idx) => (
               <SwipeCard
@@ -66,8 +79,8 @@ export function DiscoverScreen() {
 
         <div
           className={[
-            "shrink-0 z-10 -mx-4 px-4 sm:-mx-6 sm:px-6 mt-3 pt-3 pb-safe lg:mx-0 lg:px-0",
-            "bg-gradient-to-t from-background via-background/95 to-transparent",
+            "shrink-0 z-10 -mx-2.5 px-2.5 mt-3 pt-4 pb-safe sm:-mx-4 sm:px-4 lg:mx-0 lg:px-0 lg:max-w-xl lg:w-full lg:self-center",
+            "bg-gradient-to-t from-background via-background/[0.97] to-transparent",
             "lg:bg-transparent lg:from-transparent lg:via-transparent",
             "sticky bottom-0 lg:static",
           ].join(" ")}

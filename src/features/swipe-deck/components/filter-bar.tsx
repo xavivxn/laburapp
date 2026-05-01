@@ -14,7 +14,7 @@ export function FilterBar({ selected, onOpenSheet, onRemove }: FilterBarProps) {
   const count = selected.length;
 
   return (
-    <div className="px-4 sm:px-6 pt-3">
+    <div className="px-3 sm:px-5 lg:px-6 pt-2.5 lg:pt-3">
       <div
         className={cn(
           "flex items-center gap-2 overflow-x-auto pb-1 -mx-1 px-1 scroll-pl-1 touch-pan-x",

@@ -105,33 +105,56 @@ export function SwipeCard({
       }}
       transition={{ type: "spring", stiffness: 260, damping: 24 }}
       className={cn(
-        "absolute inset-0 rounded-3xl overflow-hidden isolate",
-        "bg-surface-elevated shadow-lg select-none touch-none",
+        "absolute inset-0 overflow-hidden isolate rounded-[1.875rem]",
+        "max-lg:rounded-[clamp(1.25rem,4.2vw,1.95rem)]",
+        "shadow-[0_22px_55px_-14px_rgba(0,0,0,0.42)] ring-1 ring-black/14",
+        "dark:ring-white/10 bg-black/40 dark:bg-black/55",
+        "select-none touch-none",
         active ? "cursor-grab active:cursor-grabbing" : "pointer-events-none",
       )}
       aria-label={`Perfil de ${profile.name}`}
     >
-      {/* Fondo: foto en todo el card (cover + punto focal estable en diferentes ratios) */}
-      <div className="absolute inset-0" aria-hidden>
+      {/* Foto: `<img>` + object-cover se adapta mejor entre ratios · iPhone/Android largos */}
+      <div className="absolute inset-0 overflow-hidden rounded-[inherit]" aria-hidden>
         <div
-          className={cn(
-            "absolute inset-0 bg-cover",
-            !photoPosition &&
-              "bg-center sm:bg-[center_top] landscape:bg-center max-lg:landscape:bg-[center_20%]",
-          )}
+          className="absolute inset-0 rounded-[inherit] [overflow-anchor:auto]"
           style={{
-            backgroundImage: `url(${profile.photoUrl})`,
-            ...(photoPosition ? { backgroundPosition: photoPosition } : {}),
-            ...(typeof photoTy === "number" && photoTy !== 0
-              ? { transform: `translateY(${photoTy}px)` }
-              : {}),
+            transform:
+              typeof photoTy === "number" && photoTy !== 0
+                ? `translate3d(0, ${photoTy}px, 0)`
+                : undefined,
+            willChange: typeof photoTy === "number" && photoTy !== 0 ? "transform" : undefined,
           }}
-        />
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- URL dinámica mock / storage; mismo patrón que Avatar */}
+          <img
+            src={profile.photoUrl}
+            alt=""
+            decoding={active ? "sync" : "async"}
+            fetchPriority={active ? "high" : "low"}
+            draggable={false}
+            sizes="(max-width: 1024px) 92vw, 28rem"
+            className={cn(
+              "pointer-events-none h-full min-h-[100.5%] w-full object-cover [-webkit-touch-callout:none]",
+              !photoPosition &&
+                "object-[center_38%]",
+              !photoPosition &&
+                "max-[390px]:object-[center_36%]",
+              !photoPosition &&
+                "max-lg:object-[center_38%]",
+              !photoPosition &&
+                "min-[412px]:max-lg:object-[center_40%]",
+              !photoPosition &&
+                "max-lg:landscape:object-[center_30%]",
+            )}
+            style={photoPosition ? { objectPosition: photoPosition } : undefined}
+          />
+        </div>
         <div
           className={cn(
-            "absolute inset-0 bg-gradient-to-t to-transparent",
+            "pointer-events-none absolute inset-0 bg-gradient-to-t to-transparent rounded-[inherit]",
             compactDetail
-              ? "from-black/70 via-black/24 via-[28%]"
+              ? "from-black/74 via-black/26 via-[30%]"
               : "from-black/92 via-black/38 via-[35%]",
           )}
         />
@@ -161,14 +184,14 @@ export function SwipeCard({
           compactDetail ? "min-h-[6.5rem]" : "min-h-[7.5rem]",
           compactDetail
             ? [
-                "max-h-[min(39dvh,44%,17.25rem)]",
-                "max-lg:landscape:max-h-[min(34dvh,40%,13.75rem)]",
-                "lg:max-h-[min(36dvh,40%,17rem)]",
+                "max-h-[min(43svh,46%,17.85rem)]",
+                "max-lg:landscape:max-h-[min(38svh,42%,14.25rem)]",
+                "lg:max-h-[min(39svh,42%,17.75rem)]",
               ]
             : [
-                "max-h-[min(52dvh,54%,22rem)]",
-                "max-lg:landscape:max-h-[min(44dvh,48%,17rem)]",
-                "lg:max-h-[min(45dvh,48%,21rem)]",
+                "max-h-[min(54svh,56%,23.5rem)]",
+                "max-lg:landscape:max-h-[min(46svh,50%,18rem)]",
+                "lg:max-h-[min(47svh,50%,21.75rem)]",
               ],
         )}
       >
