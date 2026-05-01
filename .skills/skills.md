@@ -1,6 +1,6 @@
 # Laburapp — Skills Index
 
-This folder is the **source of truth** for how Laburapp is built. Every AI session and every contributor reads from here before touching code. If you make a non-obvious decision while coding, update the relevant skill file in the same change.
+This folder is the **source of truth** for how Laburapp is built. **On every user request** that involves this repo, the assistant should **read this file first** (with the Read tool), then open the skill files that match the topic—see `.cursor/rules/laburapp-dot-skills.mdc` (`alwaysApply: true`). Human contributors: same habit before you ship a change. If you make a non-obvious decision while coding, update the relevant skill file in the same change.
 
 ## Files
 
@@ -25,7 +25,7 @@ This folder is the **source of truth** for how Laburapp is built. Every AI sessi
 
 ## Tech baseline
 
-- **Framework:** Next.js 15, App Router, TypeScript strict.
+- **Framework:** Next.js 16, App Router, TypeScript strict.
 - **Styling:** Tailwind CSS v4 with CSS variables for tokens.
 - **UI primitives:** built in-house under `shared/components/ui/`. No external component library.
 - **Icons:** `lucide-react`.

@@ -26,7 +26,7 @@ export const feedPhotoFrameByProfileId: Partial<
 > = {
   "p-ivan": {
     backgroundPosition: "center top",
-    translateYPx: -250,
+    translateYPx: -200,
   },
   "p-ciro": {
     backgroundPosition: "center center",

@@ -2,14 +2,20 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, useReducedMotion } from "framer-motion";
 import { Briefcase, Mail, Lock } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { siteConfig } from "@/config/site";
+import { LoginSplashOverlay } from "./login-splash";
 
 export function LoginScreen() {
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
   const [loading, setLoading] = useState(false);
+  const [splashDismissed, setSplashDismissed] = useState(false);
+  const splashActive =
+    reduceMotion !== true && !splashDismissed;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,7 +25,16 @@ export function LoginScreen() {
   };
 
   return (
-    <div className="min-h-dvh flex flex-col bg-background pt-safe pb-safe">
+    <div className="relative min-h-dvh flex flex-col bg-background pt-safe pb-safe">
+      <AnimatePresence>
+        {splashActive ? (
+          <LoginSplashOverlay
+            key="login-splash"
+            onComplete={() => setSplashDismissed(true)}
+          />
+        ) : null}
+      </AnimatePresence>
+
       <div className="flex-1 flex flex-col justify-center px-6 py-10 sm:px-8">
         <div className="mx-auto w-full max-w-sm">
           <div className="flex flex-col items-center gap-3 mb-8 text-center">

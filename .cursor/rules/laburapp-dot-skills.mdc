@@ -1,0 +1,22 @@
+---
+description: Laburapp — leer .skills en cada tarea del usuario.
+alwaysApply: true
+---
+
+# `.skills/` en cada pedido
+
+Cuando el usuario pida **cualquier** cosa sobre este repo (código, diseño, deploy, Supabase, refactors, copy, etc.):
+
+1. **Leer de inmediato** el índice del repo: `.skills/skills.md` (golden rules + baseline técnico). Usá la herramienta de lectura de archivos; no asumas convenciones de memoria.
+2. **Abrir los skills que encajen** con el pedido (en el mismo turno o justo después del índice):
+   - UI, tokens, motion → `.skills/ux-skill.md`
+   - Móvil, safe-area, PWA, gestos → `.skills/responsive-skill.md`
+   - Carpetas, features, límites → `.skills/architecture-skill.md`
+   - Cómo trabajar acá, mocks, qué no hacer → `.skills/ai-collaboration-skill.md`
+   - Vercel, env → `.skills/deploy-skill.md`
+   - Supabase, esquema, RLS → `.skills/supabase-skill.md`
+3. Si el pedido mezcla temas, leé **todos** los que apliquen. Si no estás seguro, al menos **ux** + **architecture** + **ai-collaboration**.
+4. **No contradigas** esos documentos; si falta una regla, implementá y **actualizá el skill** en el mismo cambio.
+5. **CLAUDE.md** y **AGENTS.md** siguen vigentes además de lo anterior.
+
+Esto es independiente de otras “skills” globales del editor: la fuente de verdad del **proyecto** es `.skills/`.

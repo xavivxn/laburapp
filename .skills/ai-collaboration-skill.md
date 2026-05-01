@@ -2,9 +2,9 @@
 
 How AI assistants (Claude, Cursor, Copilot, etc.) should work on Laburapp.
 
-## Before writing code
+## Before every task (each user message that touches the repo)
 
-1. **Read `.skills/skills.md` and the relevant skill file.** Don't infer conventions — they're written down.
+1. **Read `.skills/skills.md` first**, then the skill files that apply to that request. Don't infer conventions — they're written down. In Cursor this is reinforced by `.cursor/rules/laburapp-dot-skills.mdc` (`alwaysApply`).
 2. **Check `MEMORY.md`** if collaborating via Claude Code — it has user/project context that overrides any guess.
 3. **Match the feature.** New code goes in an existing feature when it fits. Only create a new feature for distinct domains.
 
